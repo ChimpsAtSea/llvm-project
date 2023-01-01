@@ -6,6 +6,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+// UNSUPPORTED: !stdlib=libc++ && (c++03 || c++11 || c++14)
+
 // <string_view>
 
 // constexpr basic_string_view () noexcept;
@@ -41,8 +43,9 @@ int main(int, char**) {
     test<std::u8string_view> ();
 #endif
     test<std::u32string_view> ();
+#ifndef TEST_HAS_NO_WIDE_CHARACTERS
     test<std::wstring_view> ();
-
+#endif
 
   return 0;
 }

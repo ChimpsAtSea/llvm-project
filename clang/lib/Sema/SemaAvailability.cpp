@@ -501,7 +501,7 @@ static void DoEmitAvailabilityWarning(Sema &S, AvailabilityResult K,
         SmallVector<StringRef, 12> SelectorSlotNames;
         Optional<unsigned> NumParams = tryParseObjCMethodName(
             Replacement, SelectorSlotNames, S.getLangOpts());
-        if (NumParams && NumParams.getValue() == Sel.getNumArgs()) {
+        if (NumParams && *NumParams == Sel.getNumArgs()) {
           assert(SelectorSlotNames.size() == Locs.size());
           for (unsigned I = 0; I < Locs.size(); ++I) {
             if (!Sel.getNameForSlot(I).empty()) {
@@ -630,8 +630,7 @@ public:
                                               const CompoundStmt *Scope) {
     LastDeclUSEFinder Visitor;
     Visitor.D = D;
-    for (auto I = Scope->body_rbegin(), E = Scope->body_rend(); I != E; ++I) {
-      const Stmt *S = *I;
+    for (const Stmt *S : llvm::reverse(Scope->body())) {
       if (!Visitor.TraverseStmt(const_cast<Stmt *>(S)))
         return S;
     }

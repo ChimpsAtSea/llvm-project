@@ -92,7 +92,7 @@ namespace llvm {
      Note: we need to make the value different from semBogus as otherwise
      an unsafe optimization may collapse both values to a single address,
      and we heavily rely on them having distinct addresses.             */
-  static const fltSemantics semPPCDoubleDouble = {-1, 0, 0, 0};
+  static const fltSemantics semPPCDoubleDouble = {-1, 0, 0, 128};
 
   /* These are legacy semantics for the fallback, inaccrurate implementation of
      IBM double-double, if the accurate semPPCDoubleDouble doesn't handle the
@@ -2213,13 +2213,20 @@ IEEEFloat::opStatus IEEEFloat::convert(const fltSemantics &toSemantics,
   // when truncating from PowerPC double-double to double format), the
   // right shift could lose result mantissa bits.  Adjust exponent instead
   // of performing excessive shift.
+  // Also do a similar trick in case shifting denormal would produce zero
+  // significand as this case isn't handled correctly by normalize.
   if (shift < 0 && isFiniteNonZero()) {
-    int exponentChange = significandMSB() + 1 - fromSemantics.precision;
+    int omsb = significandMSB() + 1;
+    int exponentChange = omsb - fromSemantics.precision;
     if (exponent + exponentChange < toSemantics.minExponent)
       exponentChange = toSemantics.minExponent - exponent;
     if (exponentChange < shift)
       exponentChange = shift;
     if (exponentChange < 0) {
+      shift -= exponentChange;
+      exponent += exponentChange;
+    } else if (omsb <= -shift) {
+      exponentChange = omsb + shift - 1; // leave at least one bit set
       shift -= exponentChange;
       exponent += exponentChange;
     }

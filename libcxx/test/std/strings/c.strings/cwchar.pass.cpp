@@ -8,6 +8,8 @@
 
 // <cwchar>
 
+// XFAIL: no-wide-characters
+
 #include <cwchar>
 #include <ctime>
 #include <cstdarg>

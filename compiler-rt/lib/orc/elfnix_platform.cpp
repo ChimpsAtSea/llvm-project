@@ -15,6 +15,7 @@
 #include "error.h"
 #include "wrapper_function_utils.h"
 
+#include <algorithm>
 #include <map>
 #include <mutex>
 #include <sstream>
@@ -29,10 +30,10 @@ ORC_RT_JIT_DISPATCH_TAG(__orc_rt_elfnix_get_initializers_tag)
 ORC_RT_JIT_DISPATCH_TAG(__orc_rt_elfnix_get_deinitializers_tag)
 ORC_RT_JIT_DISPATCH_TAG(__orc_rt_elfnix_symbol_lookup_tag)
 
-// eh-frame registration functions.
-// We expect these to be available for all processes.
-extern "C" void __register_frame(const void *);
-extern "C" void __deregister_frame(const void *);
+// eh-frame registration functions, made available via aliases
+// installed by the Platform
+extern "C" void __orc_rt_register_eh_frame_section(const void *);
+extern "C" void __orc_rt_deregister_eh_frame_section(const void *);
 
 namespace {
 
@@ -62,9 +63,15 @@ Error runInitArray(const std::vector<ExecutorAddrRange> &InitArraySections,
 
   return Error::success();
 }
+
 struct TLSInfoEntry {
   unsigned long Key = 0;
   unsigned long DataAddress = 0;
+};
+
+struct TLSDescriptor {
+  void (*Resolver)(void *);
+  TLSInfoEntry *InfoEntry;
 };
 
 class ELFNixPlatformRuntimeState {
@@ -84,11 +91,12 @@ private:
   };
 
 public:
-  static void initialize();
+  static void initialize(void *DSOHandle);
   static ELFNixPlatformRuntimeState &get();
   static void destroy();
 
-  ELFNixPlatformRuntimeState() = default;
+  ELFNixPlatformRuntimeState(void *DSOHandle)
+      : PlatformJDDSOHandle(DSOHandle) {}
 
   // Delete copy and move constructors.
   ELFNixPlatformRuntimeState(const ELFNixPlatformRuntimeState &) = delete;
@@ -112,6 +120,8 @@ public:
   Expected<std::pair<const char *, size_t>>
   getThreadDataSectionFor(const char *ThreadData);
 
+  void *getPlatformJDDSOHandle() { return PlatformJDDSOHandle; }
+
 private:
   PerJITDylibState *getJITDylibStateByHeaderAddr(void *DSOHandle);
   PerJITDylibState *getJITDylibStateByName(string_view Path);
@@ -130,11 +140,7 @@ private:
 
   static ELFNixPlatformRuntimeState *MOPS;
 
-  using InitSectionHandler =
-      Error (*)(const std::vector<ExecutorAddrRange> &Sections,
-                const ELFNixJITDylibInitializers &MOJDIs);
-  const std::vector<std::pair<const char *, InitSectionHandler>> InitSections =
-      {{".init_array", runInitArray}};
+  void *PlatformJDDSOHandle;
 
   // FIXME: Move to thread-state.
   std::string DLFcnError;
@@ -149,9 +155,9 @@ private:
 
 ELFNixPlatformRuntimeState *ELFNixPlatformRuntimeState::MOPS = nullptr;
 
-void ELFNixPlatformRuntimeState::initialize() {
+void ELFNixPlatformRuntimeState::initialize(void *DSOHandle) {
   assert(!MOPS && "ELFNixPlatformRuntimeState should be null");
-  MOPS = new ELFNixPlatformRuntimeState();
+  MOPS = new ELFNixPlatformRuntimeState(DSOHandle);
 }
 
 ELFNixPlatformRuntimeState &ELFNixPlatformRuntimeState::get() {
@@ -167,7 +173,8 @@ void ELFNixPlatformRuntimeState::destroy() {
 Error ELFNixPlatformRuntimeState::registerObjectSections(
     ELFNixPerObjectSectionsToRegister POSR) {
   if (POSR.EHFrameSection.Start)
-    __register_frame(POSR.EHFrameSection.Start.toPtr<const char *>());
+    __orc_rt_register_eh_frame_section(
+        POSR.EHFrameSection.Start.toPtr<const char *>());
 
   if (POSR.ThreadDataSection.Start) {
     if (auto Err = registerThreadDataSection(
@@ -181,7 +188,8 @@ Error ELFNixPlatformRuntimeState::registerObjectSections(
 Error ELFNixPlatformRuntimeState::deregisterObjectSections(
     ELFNixPerObjectSectionsToRegister POSR) {
   if (POSR.EHFrameSection.Start)
-    __deregister_frame(POSR.EHFrameSection.Start.toPtr<const char *>());
+    __orc_rt_deregister_eh_frame_section(
+        POSR.EHFrameSection.Start.toPtr<const char *>());
 
   return Error::success();
 }
@@ -371,21 +379,29 @@ Expected<void *> ELFNixPlatformRuntimeState::dlopenInitialize(string_view Path,
   return JDS->Header;
 }
 
+long getPriority(const std::string &name) {
+  auto pos = name.find_last_not_of("0123456789");
+  if (pos == name.size() - 1)
+    return 65535;
+  else
+    return std::strtol(name.c_str() + pos + 1, nullptr, 10);
+}
+
 Error ELFNixPlatformRuntimeState::initializeJITDylib(
     ELFNixJITDylibInitializers &MOJDIs) {
 
   auto &JDS = getOrCreateJITDylibState(MOJDIs);
   ++JDS.RefCount;
 
-  for (auto &KV : InitSections) {
-    const auto &Name = KV.first;
-    const auto &Handler = KV.second;
-    auto I = MOJDIs.InitSections.find(Name);
-    if (I != MOJDIs.InitSections.end()) {
-      if (auto Err = Handler(I->second, MOJDIs))
-        return Err;
-    }
-  }
+  using SectionList = std::vector<ExecutorAddrRange>;
+  std::sort(MOJDIs.InitSections.begin(), MOJDIs.InitSections.end(),
+            [](const std::pair<std::string, SectionList> &LHS,
+               const std::pair<std::string, SectionList> &RHS) -> bool {
+              return getPriority(LHS.first) < getPriority(RHS.first);
+            });
+  for (auto &Entry : MOJDIs.InitSections)
+    if (auto Err = runInitArray(Entry.second, MOJDIs))
+      return Err;
 
   return Error::success();
 }
@@ -434,8 +450,13 @@ void destroyELFNixTLVMgr(void *ELFNixTLVMgr) {
 
 ORC_RT_INTERFACE __orc_rt_CWrapperFunctionResult
 __orc_rt_elfnix_platform_bootstrap(char *ArgData, size_t ArgSize) {
-  ELFNixPlatformRuntimeState::initialize();
-  return WrapperFunctionResult().release();
+  return WrapperFunction<void(uint64_t)>::handle(
+             ArgData, ArgSize,
+             [](uint64_t &DSOHandle) {
+               ELFNixPlatformRuntimeState::initialize(
+                   reinterpret_cast<void *>(DSOHandle));
+             })
+      .release();
 }
 
 ORC_RT_INTERFACE __orc_rt_CWrapperFunctionResult
@@ -486,6 +507,13 @@ ORC_RT_INTERFACE void *__orc_rt_elfnix_tls_get_addr_impl(TLSInfoEntry *D) {
       reinterpret_cast<char *>(static_cast<uintptr_t>(D->DataAddress)));
 }
 
+ORC_RT_INTERFACE ptrdiff_t ___orc_rt_elfnix_tlsdesc_resolver_impl(
+    TLSDescriptor *D, const char *ThreadPointer) {
+  const char *TLVPtr = reinterpret_cast<const char *>(
+      __orc_rt_elfnix_tls_get_addr_impl(D->InfoEntry));
+  return TLVPtr - ThreadPointer;
+}
+
 ORC_RT_INTERFACE __orc_rt_CWrapperFunctionResult
 __orc_rt_elfnix_create_pthread_key(char *ArgData, size_t ArgSize) {
   return WrapperFunction<SPSExpected<uint64_t>(void)>::handle(
@@ -509,6 +537,12 @@ int __orc_rt_elfnix_cxa_atexit(void (*func)(void *), void *arg,
                                void *dso_handle) {
   return ELFNixPlatformRuntimeState::get().registerAtExit(func, arg,
                                                           dso_handle);
+}
+
+int __orc_rt_elfnix_atexit(void (*func)(void *)) {
+  auto &PlatformRTState = ELFNixPlatformRuntimeState::get();
+  return ELFNixPlatformRuntimeState::get().registerAtExit(
+      func, NULL, PlatformRTState.getPlatformJDDSOHandle());
 }
 
 void __orc_rt_elfnix_cxa_finalize(void *dso_handle) {

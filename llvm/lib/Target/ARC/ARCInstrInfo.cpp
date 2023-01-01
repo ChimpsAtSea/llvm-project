@@ -18,8 +18,8 @@
 #include "llvm/CodeGen/MachineFrameInfo.h"
 #include "llvm/CodeGen/MachineInstrBuilder.h"
 #include "llvm/CodeGen/MachineMemOperand.h"
+#include "llvm/MC/TargetRegistry.h"
 #include "llvm/Support/Debug.h"
-#include "llvm/Support/TargetRegistry.h"
 
 using namespace llvm;
 
@@ -44,8 +44,7 @@ enum TSFlagsConstants {
 void ARCInstrInfo::anchor() {}
 
 ARCInstrInfo::ARCInstrInfo(const ARCSubtarget &ST)
-    : ARCGenInstrInfo(ARC::ADJCALLSTACKDOWN, ARC::ADJCALLSTACKUP), ST(ST),
-      RI(ST) {}
+    : ARCGenInstrInfo(ARC::ADJCALLSTACKDOWN, ARC::ADJCALLSTACKUP), RI(ST) {}
 
 static bool isZeroImm(const MachineOperand &Op) {
   return Op.isImm() && Op.getImm() == 0;

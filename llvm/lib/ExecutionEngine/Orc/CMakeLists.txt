@@ -1,8 +1,13 @@
+if( CMAKE_HOST_UNIX AND HAVE_LIBRT )
+  set(rt_lib rt)
+endif()
+
 add_llvm_component_library(LLVMOrcJIT
   CompileOnDemandLayer.cpp
   CompileUtils.cpp
   Core.cpp
   DebugObjectManagerPlugin.cpp
+  DebuggerSupportPlugin.cpp
   DebugUtils.cpp
   EPCDynamicLibrarySearchGenerator.cpp
   EPCDebugObjectRegistrar.cpp
@@ -12,6 +17,7 @@ add_llvm_component_library(LLVMOrcJIT
   EPCGenericRTDyldMemoryManager.cpp
   EPCIndirectionUtils.cpp
   ExecutionUtils.cpp
+  ObjectFileInterface.cpp
   IndirectionUtils.cpp
   IRCompileLayer.cpp
   IRTransformLayer.cpp
@@ -21,6 +27,8 @@ add_llvm_component_library(LLVMOrcJIT
   LookupAndRecordAddrs.cpp
   LLJIT.cpp
   MachOPlatform.cpp
+  MapperJITLinkMemoryManager.cpp
+  MemoryMapper.cpp
   ELFNixPlatform.cpp
   Mangling.cpp
   ObjectLinkingLayer.cpp
@@ -32,12 +40,17 @@ add_llvm_component_library(LLVMOrcJIT
   Speculation.cpp
   SpeculateAnalyses.cpp
   ExecutorProcessControl.cpp
+  TaskDispatch.cpp
   ThreadSafeModule.cpp
   ADDITIONAL_HEADER_DIRS
   ${LLVM_MAIN_INCLUDE_DIR}/llvm/ExecutionEngine/Orc
 
   DEPENDS
   intrinsics_gen
+
+  LINK_LIBS
+  ${LLVM_PTHREAD_LIB}
+  ${rt_lib}
 
   LINK_COMPONENTS
   Core
@@ -47,6 +60,7 @@ add_llvm_component_library(LLVMOrcJIT
   OrcShared
   OrcTargetProcess
   MC
+  MCDisassembler
   Passes
   RuntimeDyld
   Support

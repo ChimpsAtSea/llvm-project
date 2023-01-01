@@ -6,7 +6,7 @@
 define i32 @maybe_throwing_callee(i32 %arg) {
 ; CHECK-ALL: call void @thrown()
 ; CHECK-INTERESTINGNESS: ret i32
-; CHECK-FINAL: ret i32 undef
+; CHECK-FINAL: ret i32 0
   call void @thrown()
   ret i32 %arg
 }
@@ -18,7 +18,7 @@ declare void @did_not_throw(i32)
 declare void @thrown()
 
 ; CHECK-INTERESTINGNESS: define void @caller(
-; CHECK-FINAL: define void @caller(i32 %arg)
+; CHECK-FINAL: define void @caller()
 define void @caller(i32 %arg) personality i8* bitcast (i32 (...)* @__gxx_personality_v0 to i8*) {
 ; CHECK-ALL: bb:
 bb:

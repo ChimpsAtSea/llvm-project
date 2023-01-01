@@ -59,14 +59,16 @@ define i16 @parity_16(i16 %x) {
 ;
 ; X86-POPCNT-LABEL: parity_16:
 ; X86-POPCNT:       # %bb.0:
-; X86-POPCNT-NEXT:    popcntw {{[0-9]+}}(%esp), %ax
+; X86-POPCNT-NEXT:    movzwl {{[0-9]+}}(%esp), %eax
+; X86-POPCNT-NEXT:    popcntl %eax, %eax
 ; X86-POPCNT-NEXT:    andl $1, %eax
 ; X86-POPCNT-NEXT:    # kill: def $ax killed $ax killed $eax
 ; X86-POPCNT-NEXT:    retl
 ;
 ; X64-POPCNT-LABEL: parity_16:
 ; X64-POPCNT:       # %bb.0:
-; X64-POPCNT-NEXT:    popcntw %di, %ax
+; X64-POPCNT-NEXT:    movzwl %di, %eax
+; X64-POPCNT-NEXT:    popcntl %eax, %eax
 ; X64-POPCNT-NEXT:    andl $1, %eax
 ; X64-POPCNT-NEXT:    # kill: def $ax killed $ax killed $eax
 ; X64-POPCNT-NEXT:    retq
@@ -75,7 +77,7 @@ define i16 @parity_16(i16 %x) {
   ret i16 %2
 }
 
-define i16 @parity_16_load(i16* %x) {
+define i16 @parity_16_load(ptr %x) {
 ; X86-NOPOPCNT-LABEL: parity_16_load:
 ; X86-NOPOPCNT:       # %bb.0:
 ; X86-NOPOPCNT-NEXT:    movl {{[0-9]+}}(%esp), %eax
@@ -98,18 +100,20 @@ define i16 @parity_16_load(i16* %x) {
 ; X86-POPCNT-LABEL: parity_16_load:
 ; X86-POPCNT:       # %bb.0:
 ; X86-POPCNT-NEXT:    movl {{[0-9]+}}(%esp), %eax
-; X86-POPCNT-NEXT:    popcntw (%eax), %ax
+; X86-POPCNT-NEXT:    movzwl (%eax), %eax
+; X86-POPCNT-NEXT:    popcntl %eax, %eax
 ; X86-POPCNT-NEXT:    andl $1, %eax
 ; X86-POPCNT-NEXT:    # kill: def $ax killed $ax killed $eax
 ; X86-POPCNT-NEXT:    retl
 ;
 ; X64-POPCNT-LABEL: parity_16_load:
 ; X64-POPCNT:       # %bb.0:
-; X64-POPCNT-NEXT:    popcntw (%rdi), %ax
+; X64-POPCNT-NEXT:    movzwl (%rdi), %eax
+; X64-POPCNT-NEXT:    popcntl %eax, %eax
 ; X64-POPCNT-NEXT:    andl $1, %eax
 ; X64-POPCNT-NEXT:    # kill: def $ax killed $ax killed $eax
 ; X64-POPCNT-NEXT:    retq
-  %1 = load i16, i16* %x
+  %1 = load i16, ptr %x
   %2 = tail call i16 @llvm.ctpop.i16(i16 %1)
   %3 = and i16 %2, 1
   ret i16 %3
@@ -420,7 +424,8 @@ define i16 @parity_16_shift(i16 %0) {
 ;
 ; X86-POPCNT-LABEL: parity_16_shift:
 ; X86-POPCNT:       # %bb.0:
-; X86-POPCNT-NEXT:    popcntw {{[0-9]+}}(%esp), %ax
+; X86-POPCNT-NEXT:    movzwl {{[0-9]+}}(%esp), %eax
+; X86-POPCNT-NEXT:    popcntl %eax, %eax
 ; X86-POPCNT-NEXT:    andl $1, %eax
 ; X86-POPCNT-NEXT:    addl %eax, %eax
 ; X86-POPCNT-NEXT:    # kill: def $ax killed $ax killed $eax
@@ -428,7 +433,8 @@ define i16 @parity_16_shift(i16 %0) {
 ;
 ; X64-POPCNT-LABEL: parity_16_shift:
 ; X64-POPCNT:       # %bb.0:
-; X64-POPCNT-NEXT:    popcntw %di, %ax
+; X64-POPCNT-NEXT:    movzwl %di, %eax
+; X64-POPCNT-NEXT:    popcntl %eax, %eax
 ; X64-POPCNT-NEXT:    andl $1, %eax
 ; X64-POPCNT-NEXT:    addl %eax, %eax
 ; X64-POPCNT-NEXT:    # kill: def $ax killed $ax killed $eax

@@ -29,10 +29,11 @@
 #include "llvm/MC/MCRegisterInfo.h"
 #include "llvm/MC/MCStreamer.h"
 #include "llvm/MC/MCSubtargetInfo.h"
+#include "llvm/MC/TargetRegistry.h"
 #include "llvm/Support/ErrorHandling.h"
-#include "llvm/Support/TargetRegistry.h"
 
 #define GET_INSTRINFO_MC_DESC
+#define ENABLE_INSTR_PREDICATE_VERIFIER
 #include "RISCVGenInstrInfo.inc"
 
 #define GET_REGINFO_MC_DESC
@@ -77,11 +78,9 @@ createRISCVMCObjectFileInfo(MCContext &Ctx, bool PIC,
 
 static MCSubtargetInfo *createRISCVMCSubtargetInfo(const Triple &TT,
                                                    StringRef CPU, StringRef FS) {
-  if (CPU.empty())
+  if (CPU.empty() || CPU == "generic")
     CPU = TT.isArch64Bit() ? "generic-rv64" : "generic-rv32";
-  if (CPU == "generic")
-    report_fatal_error(Twine("CPU 'generic' is not supported. Use ") +
-                       (TT.isArch64Bit() ? "generic-rv64" : "generic-rv32"));
+
   return createRISCVMCSubtargetInfoImpl(TT, CPU, /*TuneCPU*/ CPU, FS);
 }
 

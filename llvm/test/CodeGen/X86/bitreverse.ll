@@ -58,10 +58,11 @@ define <2 x i16> @test_bitreverse_v2i16(<2 x i16> %a) nounwind {
 ; X64-NEXT:    psllw $8, %xmm0
 ; X64-NEXT:    por %xmm1, %xmm0
 ; X64-NEXT:    movdqa %xmm0, %xmm1
-; X64-NEXT:    psllw $4, %xmm1
-; X64-NEXT:    pand {{\.?LCPI[0-9]+_[0-9]+}}(%rip), %xmm1
-; X64-NEXT:    psrlw $4, %xmm0
-; X64-NEXT:    pand {{\.?LCPI[0-9]+_[0-9]+}}(%rip), %xmm0
+; X64-NEXT:    psrlw $4, %xmm1
+; X64-NEXT:    movdqa {{.*#+}} xmm2 = [15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15]
+; X64-NEXT:    pand %xmm2, %xmm1
+; X64-NEXT:    pand %xmm2, %xmm0
+; X64-NEXT:    psllw $4, %xmm0
 ; X64-NEXT:    por %xmm1, %xmm0
 ; X64-NEXT:    movdqa %xmm0, %xmm1
 ; X64-NEXT:    psrlw $2, %xmm1
@@ -347,7 +348,7 @@ declare i8 @llvm.bitreverse.i8(i8) readnone
 define i8 @test_bitreverse_i8(i8 %a) {
 ; X86-LABEL: test_bitreverse_i8:
 ; X86:       # %bb.0:
-; X86-NEXT:    movb {{[0-9]+}}(%esp), %al
+; X86-NEXT:    movzbl {{[0-9]+}}(%esp), %eax
 ; X86-NEXT:    rolb $4, %al
 ; X86-NEXT:    movl %eax, %ecx
 ; X86-NEXT:    andb $51, %cl
@@ -365,21 +366,19 @@ define i8 @test_bitreverse_i8(i8 %a) {
 ;
 ; X64-LABEL: test_bitreverse_i8:
 ; X64:       # %bb.0:
-; X64-NEXT:    # kill: def $edi killed $edi def $rdi
 ; X64-NEXT:    rolb $4, %dil
 ; X64-NEXT:    movl %edi, %eax
 ; X64-NEXT:    andb $51, %al
 ; X64-NEXT:    shlb $2, %al
 ; X64-NEXT:    shrb $2, %dil
 ; X64-NEXT:    andb $51, %dil
-; X64-NEXT:    orb %al, %dil
-; X64-NEXT:    movl %edi, %eax
+; X64-NEXT:    orb %dil, %al
+; X64-NEXT:    movl %eax, %ecx
+; X64-NEXT:    andb $85, %cl
+; X64-NEXT:    addb %cl, %cl
+; X64-NEXT:    shrb %al
 ; X64-NEXT:    andb $85, %al
-; X64-NEXT:    addb %al, %al
-; X64-NEXT:    shrb %dil
-; X64-NEXT:    andb $85, %dil
-; X64-NEXT:    addl %edi, %eax
-; X64-NEXT:    # kill: def $al killed $al killed $eax
+; X64-NEXT:    orb %cl, %al
 ; X64-NEXT:    retq
 ;
 ; X86XOP-LABEL: test_bitreverse_i8:
@@ -398,41 +397,39 @@ declare i4 @llvm.bitreverse.i4(i4) readnone
 define i4 @test_bitreverse_i4(i4 %a) {
 ; X86-LABEL: test_bitreverse_i4:
 ; X86:       # %bb.0:
-; X86-NEXT:    movb {{[0-9]+}}(%esp), %al
-; X86-NEXT:    rolb $4, %al
-; X86-NEXT:    movl %eax, %ecx
-; X86-NEXT:    andb $51, %cl
-; X86-NEXT:    shlb $2, %cl
-; X86-NEXT:    shrb $2, %al
-; X86-NEXT:    andb $51, %al
-; X86-NEXT:    orb %cl, %al
-; X86-NEXT:    movl %eax, %ecx
-; X86-NEXT:    andb $80, %cl
-; X86-NEXT:    addb %cl, %cl
-; X86-NEXT:    shrb %al
-; X86-NEXT:    andb $80, %al
-; X86-NEXT:    orb %cl, %al
-; X86-NEXT:    shrb $4, %al
+; X86-NEXT:    movzbl {{[0-9]+}}(%esp), %ecx
+; X86-NEXT:    movl %ecx, %eax
+; X86-NEXT:    andb $15, %al
+; X86-NEXT:    movl %ecx, %edx
+; X86-NEXT:    addb %cl, %dl
+; X86-NEXT:    andb $4, %dl
+; X86-NEXT:    shlb $3, %cl
+; X86-NEXT:    andb $8, %cl
+; X86-NEXT:    orb %dl, %cl
+; X86-NEXT:    movl %eax, %edx
+; X86-NEXT:    shrb %dl
+; X86-NEXT:    andb $2, %dl
+; X86-NEXT:    orb %cl, %dl
+; X86-NEXT:    shrb $3, %al
+; X86-NEXT:    orb %dl, %al
 ; X86-NEXT:    retl
 ;
 ; X64-LABEL: test_bitreverse_i4:
 ; X64:       # %bb.0:
 ; X64-NEXT:    # kill: def $edi killed $edi def $rdi
-; X64-NEXT:    rolb $4, %dil
+; X64-NEXT:    leal (%rdi,%rdi), %ecx
+; X64-NEXT:    leal (,%rdi,8), %edx
 ; X64-NEXT:    movl %edi, %eax
-; X64-NEXT:    andb $51, %al
-; X64-NEXT:    shlb $2, %al
-; X64-NEXT:    shrb $2, %dil
-; X64-NEXT:    andb $51, %dil
-; X64-NEXT:    orb %al, %dil
-; X64-NEXT:    movl %edi, %eax
-; X64-NEXT:    andb $80, %al
-; X64-NEXT:    addb %al, %al
-; X64-NEXT:    shrb %dil
-; X64-NEXT:    andb $80, %dil
-; X64-NEXT:    addl %edi, %eax
-; X64-NEXT:    shrb $4, %al
-; X64-NEXT:    # kill: def $al killed $al killed $eax
+; X64-NEXT:    andb $15, %al
+; X64-NEXT:    andb $4, %cl
+; X64-NEXT:    andb $8, %dl
+; X64-NEXT:    orb %cl, %dl
+; X64-NEXT:    movl %eax, %ecx
+; X64-NEXT:    shrb %cl
+; X64-NEXT:    andb $2, %cl
+; X64-NEXT:    orb %dl, %cl
+; X64-NEXT:    shrb $3, %al
+; X64-NEXT:    orb %cl, %al
 ; X64-NEXT:    retq
 ;
 ; X86XOP-LABEL: test_bitreverse_i4:
@@ -531,7 +528,7 @@ define i4 @fold_i4() {
 define i8 @identity_i8(i8 %a) {
 ; X86-LABEL: identity_i8:
 ; X86:       # %bb.0:
-; X86-NEXT:    movb {{[0-9]+}}(%esp), %al
+; X86-NEXT:    movzbl {{[0-9]+}}(%esp), %eax
 ; X86-NEXT:    retl
 ;
 ; X64-LABEL: identity_i8:
@@ -542,7 +539,7 @@ define i8 @identity_i8(i8 %a) {
 ;
 ; X86XOP-LABEL: identity_i8:
 ; X86XOP:       # %bb.0:
-; X86XOP-NEXT:    movb {{[0-9]+}}(%esp), %al
+; X86XOP-NEXT:    movzbl {{[0-9]+}}(%esp), %eax
 ; X86XOP-NEXT:    retl
   %b = call i8 @llvm.bitreverse.i8(i8 %a)
   %c = call i8 @llvm.bitreverse.i8(i8 %b)

@@ -1,11 +1,11 @@
 // RUN: mlir-opt %s -linalg-tile="tile-sizes=2,3" | FileCheck %s
 
-//  CHECK-DAG: #[[MAP0:.*]] = affine_map<(d0)[s0, s1] -> (s0 + 1, -d0 + s0 + s1 - 1)>
-//  CHECK-DAG: #[[MAP1:.*]] = affine_map<(d0)[s0, s1] -> (s0 + 2, -d0 + s0 + s1 - 1)>
-//  CHECK-DAG: #[[MAP2:.*]] = affine_map<(d0)[s0] -> (2, -d0 + s0)>
-//  CHECK-DAG: #[[MAP3:.*]] = affine_map<(d0)[s0] -> (3, -d0 + s0)>
+//  CHECK-DAG: #[[MAP0:.*]] = affine_map<(d0)[s0, s1] -> (-d0 + s0 + s1 - 1, s0 + 1)>
+//  CHECK-DAG: #[[MAP1:.*]] = affine_map<(d0)[s0, s1] -> (-d0 + s0 + s1 - 1, s0 + 2)>
+//  CHECK-DAG: #[[MAP2:.*]] = affine_map<(d0)[s0] -> (-d0 + s0, 2)>
+//  CHECK-DAG: #[[MAP3:.*]] = affine_map<(d0)[s0] -> (-d0 + s0, 3)>
 
-func @conv(%arg0 : memref<?x?xf32>, %arg1 : memref<?x?xf32>, %arg2 : memref<?x?xf32>) {
+func.func @conv(%arg0 : memref<?x?xf32>, %arg1 : memref<?x?xf32>, %arg2 : memref<?x?xf32>) {
   linalg.conv_2d ins(%arg0, %arg1 : memref<?x?xf32>, memref<?x?xf32>) outs(%arg2 : memref<?x?xf32>)
   return
 }
@@ -14,10 +14,10 @@ func @conv(%arg0 : memref<?x?xf32>, %arg1 : memref<?x?xf32>, %arg2 : memref<?x?x
 //  CHECK-SAME:   %[[ARG0:[a-zA-Z0-9_]*]]: memref<?x?xf32>
 //  CHECK-SAME:   %[[ARG1:[a-zA-Z0-9_]*]]: memref<?x?xf32>
 //  CHECK-SAME:   %[[ARG2:[a-zA-Z0-9_]*]]: memref<?x?xf32>
-//   CHECK-DAG:   %[[C0:.*]] = constant 0 : index
-//   CHECK-DAG:   %[[C1:.*]] = constant 1 : index
-//   CHECK-DAG:   %[[C2:.*]] = constant 2 : index
-//   CHECK-DAG:   %[[C3:.*]] = constant 3 : index
+//   CHECK-DAG:   %[[C0:.*]] = arith.constant 0 : index
+//   CHECK-DAG:   %[[C1:.*]] = arith.constant 1 : index
+//   CHECK-DAG:   %[[C2:.*]] = arith.constant 2 : index
+//   CHECK-DAG:   %[[C3:.*]] = arith.constant 3 : index
 //   CHECK-DAG:   %[[T0:.*]] = memref.dim %[[ARG1]], %[[C0]]
 //   CHECK-DAG:   %[[T1:.*]] = memref.dim %[[ARG1]], %[[C1]]
 //   CHECK-DAG:   %[[T2:.*]] = memref.dim %[[ARG2]], %[[C0]]

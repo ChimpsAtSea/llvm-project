@@ -38,16 +38,17 @@ void func(int val) {
 // using --filters=IfStmt
 
 
+// CHECK-NOT: {{^}}Dumping
 // CHECK:  "kind": "IfStmt",
 // CHECK-NEXT:  "range": {
 // CHECK-NEXT:   "begin": {
-// CHECK-NEXT:    "offset": 111,
+// CHECK-NEXT:    "offset": {{[0-9]+}},
 // CHECK-NEXT:    "line": 4,
 // CHECK-NEXT:    "col": 3,
 // CHECK-NEXT:    "tokLen": 2
 // CHECK-NEXT:   },
 // CHECK-NEXT:   "end": {
-// CHECK-NEXT:    "offset": 124,
+// CHECK-NEXT:    "offset": {{[0-9]+}},
 // CHECK-NEXT:    "line": 5,
 // CHECK-NEXT:    "col": 5,
 // CHECK-NEXT:    "tokLen": 1
@@ -59,13 +60,13 @@ void func(int val) {
 // CHECK-NEXT:    "kind": "ImplicitCastExpr",
 // CHECK-NEXT:    "range": {
 // CHECK-NEXT:     "begin": {
-// CHECK-NEXT:      "offset": 115,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "line": 4,
 // CHECK-NEXT:      "col": 7,
 // CHECK-NEXT:      "tokLen": 3
 // CHECK-NEXT:     },
 // CHECK-NEXT:     "end": {
-// CHECK-NEXT:      "offset": 115,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 7,
 // CHECK-NEXT:      "tokLen": 3
 // CHECK-NEXT:     }
@@ -81,12 +82,12 @@ void func(int val) {
 // CHECK-NEXT:      "kind": "ImplicitCastExpr",
 // CHECK-NEXT:      "range": {
 // CHECK-NEXT:       "begin": {
-// CHECK-NEXT:        "offset": 115,
+// CHECK-NEXT:        "offset": {{[0-9]+}},
 // CHECK-NEXT:        "col": 7,
 // CHECK-NEXT:        "tokLen": 3
 // CHECK-NEXT:       },
 // CHECK-NEXT:       "end": {
-// CHECK-NEXT:        "offset": 115,
+// CHECK-NEXT:        "offset": {{[0-9]+}},
 // CHECK-NEXT:        "col": 7,
 // CHECK-NEXT:        "tokLen": 3
 // CHECK-NEXT:       }
@@ -102,12 +103,12 @@ void func(int val) {
 // CHECK-NEXT:        "kind": "DeclRefExpr",
 // CHECK-NEXT:        "range": {
 // CHECK-NEXT:         "begin": {
-// CHECK-NEXT:          "offset": 115,
+// CHECK-NEXT:          "offset": {{[0-9]+}},
 // CHECK-NEXT:          "col": 7,
 // CHECK-NEXT:          "tokLen": 3
 // CHECK-NEXT:         },
 // CHECK-NEXT:         "end": {
-// CHECK-NEXT:          "offset": 115,
+// CHECK-NEXT:          "offset": {{[0-9]+}},
 // CHECK-NEXT:          "col": 7,
 // CHECK-NEXT:          "tokLen": 3
 // CHECK-NEXT:         }
@@ -134,13 +135,13 @@ void func(int val) {
 // CHECK-NEXT:    "kind": "NullStmt",
 // CHECK-NEXT:    "range": {
 // CHECK-NEXT:     "begin": {
-// CHECK-NEXT:      "offset": 124,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "line": 5,
 // CHECK-NEXT:      "col": 5,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     },
 // CHECK-NEXT:     "end": {
-// CHECK-NEXT:      "offset": 124,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 5,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     }
@@ -150,16 +151,17 @@ void func(int val) {
 // CHECK-NEXT: }
 
 
+// CHECK-NOT: {{^}}Dumping
 // CHECK:  "kind": "IfStmt",
 // CHECK-NEXT:  "range": {
 // CHECK-NEXT:   "begin": {
-// CHECK-NEXT:    "offset": 129,
+// CHECK-NEXT:    "offset": {{[0-9]+}},
 // CHECK-NEXT:    "line": 7,
 // CHECK-NEXT:    "col": 3,
 // CHECK-NEXT:    "tokLen": 2
 // CHECK-NEXT:   },
 // CHECK-NEXT:   "end": {
-// CHECK-NEXT:    "offset": 155,
+// CHECK-NEXT:    "offset": {{[0-9]+}},
 // CHECK-NEXT:    "line": 10,
 // CHECK-NEXT:    "col": 5,
 // CHECK-NEXT:    "tokLen": 1
@@ -172,13 +174,13 @@ void func(int val) {
 // CHECK-NEXT:    "kind": "ImplicitCastExpr",
 // CHECK-NEXT:    "range": {
 // CHECK-NEXT:     "begin": {
-// CHECK-NEXT:      "offset": 133,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "line": 7,
 // CHECK-NEXT:      "col": 7,
 // CHECK-NEXT:      "tokLen": 3
 // CHECK-NEXT:     },
 // CHECK-NEXT:     "end": {
-// CHECK-NEXT:      "offset": 133,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 7,
 // CHECK-NEXT:      "tokLen": 3
 // CHECK-NEXT:     }
@@ -194,12 +196,12 @@ void func(int val) {
 // CHECK-NEXT:      "kind": "ImplicitCastExpr",
 // CHECK-NEXT:      "range": {
 // CHECK-NEXT:       "begin": {
-// CHECK-NEXT:        "offset": 133,
+// CHECK-NEXT:        "offset": {{[0-9]+}},
 // CHECK-NEXT:        "col": 7,
 // CHECK-NEXT:        "tokLen": 3
 // CHECK-NEXT:       },
 // CHECK-NEXT:       "end": {
-// CHECK-NEXT:        "offset": 133,
+// CHECK-NEXT:        "offset": {{[0-9]+}},
 // CHECK-NEXT:        "col": 7,
 // CHECK-NEXT:        "tokLen": 3
 // CHECK-NEXT:       }
@@ -215,12 +217,12 @@ void func(int val) {
 // CHECK-NEXT:        "kind": "DeclRefExpr",
 // CHECK-NEXT:        "range": {
 // CHECK-NEXT:         "begin": {
-// CHECK-NEXT:          "offset": 133,
+// CHECK-NEXT:          "offset": {{[0-9]+}},
 // CHECK-NEXT:          "col": 7,
 // CHECK-NEXT:          "tokLen": 3
 // CHECK-NEXT:         },
 // CHECK-NEXT:         "end": {
-// CHECK-NEXT:          "offset": 133,
+// CHECK-NEXT:          "offset": {{[0-9]+}},
 // CHECK-NEXT:          "col": 7,
 // CHECK-NEXT:          "tokLen": 3
 // CHECK-NEXT:         }
@@ -247,13 +249,13 @@ void func(int val) {
 // CHECK-NEXT:    "kind": "NullStmt",
 // CHECK-NEXT:    "range": {
 // CHECK-NEXT:     "begin": {
-// CHECK-NEXT:      "offset": 142,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "line": 8,
 // CHECK-NEXT:      "col": 5,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     },
 // CHECK-NEXT:     "end": {
-// CHECK-NEXT:      "offset": 142,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 5,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     }
@@ -264,13 +266,13 @@ void func(int val) {
 // CHECK-NEXT:    "kind": "NullStmt",
 // CHECK-NEXT:    "range": {
 // CHECK-NEXT:     "begin": {
-// CHECK-NEXT:      "offset": 155,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "line": 10,
 // CHECK-NEXT:      "col": 5,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     },
 // CHECK-NEXT:     "end": {
-// CHECK-NEXT:      "offset": 155,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 5,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     }
@@ -280,16 +282,17 @@ void func(int val) {
 // CHECK-NEXT: }
 
 
+// CHECK-NOT: {{^}}Dumping
 // CHECK:  "kind": "IfStmt",
 // CHECK-NEXT:  "range": {
 // CHECK-NEXT:   "begin": {
-// CHECK-NEXT:    "offset": 160,
+// CHECK-NEXT:    "offset": {{[0-9]+}},
 // CHECK-NEXT:    "line": 12,
 // CHECK-NEXT:    "col": 3,
 // CHECK-NEXT:    "tokLen": 2
 // CHECK-NEXT:   },
 // CHECK-NEXT:   "end": {
-// CHECK-NEXT:    "offset": 208,
+// CHECK-NEXT:    "offset": {{[0-9]+}},
 // CHECK-NEXT:    "line": 17,
 // CHECK-NEXT:    "col": 5,
 // CHECK-NEXT:    "tokLen": 1
@@ -302,13 +305,13 @@ void func(int val) {
 // CHECK-NEXT:    "kind": "ImplicitCastExpr",
 // CHECK-NEXT:    "range": {
 // CHECK-NEXT:     "begin": {
-// CHECK-NEXT:      "offset": 164,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "line": 12,
 // CHECK-NEXT:      "col": 7,
 // CHECK-NEXT:      "tokLen": 3
 // CHECK-NEXT:     },
 // CHECK-NEXT:     "end": {
-// CHECK-NEXT:      "offset": 164,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 7,
 // CHECK-NEXT:      "tokLen": 3
 // CHECK-NEXT:     }
@@ -324,12 +327,12 @@ void func(int val) {
 // CHECK-NEXT:      "kind": "ImplicitCastExpr",
 // CHECK-NEXT:      "range": {
 // CHECK-NEXT:       "begin": {
-// CHECK-NEXT:        "offset": 164,
+// CHECK-NEXT:        "offset": {{[0-9]+}},
 // CHECK-NEXT:        "col": 7,
 // CHECK-NEXT:        "tokLen": 3
 // CHECK-NEXT:       },
 // CHECK-NEXT:       "end": {
-// CHECK-NEXT:        "offset": 164,
+// CHECK-NEXT:        "offset": {{[0-9]+}},
 // CHECK-NEXT:        "col": 7,
 // CHECK-NEXT:        "tokLen": 3
 // CHECK-NEXT:       }
@@ -345,12 +348,12 @@ void func(int val) {
 // CHECK-NEXT:        "kind": "DeclRefExpr",
 // CHECK-NEXT:        "range": {
 // CHECK-NEXT:         "begin": {
-// CHECK-NEXT:          "offset": 164,
+// CHECK-NEXT:          "offset": {{[0-9]+}},
 // CHECK-NEXT:          "col": 7,
 // CHECK-NEXT:          "tokLen": 3
 // CHECK-NEXT:         },
 // CHECK-NEXT:         "end": {
-// CHECK-NEXT:          "offset": 164,
+// CHECK-NEXT:          "offset": {{[0-9]+}},
 // CHECK-NEXT:          "col": 7,
 // CHECK-NEXT:          "tokLen": 3
 // CHECK-NEXT:         }
@@ -377,13 +380,13 @@ void func(int val) {
 // CHECK-NEXT:    "kind": "NullStmt",
 // CHECK-NEXT:    "range": {
 // CHECK-NEXT:     "begin": {
-// CHECK-NEXT:      "offset": 173,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "line": 13,
 // CHECK-NEXT:      "col": 5,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     },
 // CHECK-NEXT:     "end": {
-// CHECK-NEXT:      "offset": 173,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 5,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     }
@@ -394,13 +397,13 @@ void func(int val) {
 // CHECK-NEXT:    "kind": "IfStmt",
 // CHECK-NEXT:    "range": {
 // CHECK-NEXT:     "begin": {
-// CHECK-NEXT:      "offset": 182,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "line": 14,
 // CHECK-NEXT:      "col": 8,
 // CHECK-NEXT:      "tokLen": 2
 // CHECK-NEXT:     },
 // CHECK-NEXT:     "end": {
-// CHECK-NEXT:      "offset": 208,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "line": 17,
 // CHECK-NEXT:      "col": 5,
 // CHECK-NEXT:      "tokLen": 1
@@ -413,13 +416,13 @@ void func(int val) {
 // CHECK-NEXT:      "kind": "ImplicitCastExpr",
 // CHECK-NEXT:      "range": {
 // CHECK-NEXT:       "begin": {
-// CHECK-NEXT:        "offset": 186,
+// CHECK-NEXT:        "offset": {{[0-9]+}},
 // CHECK-NEXT:        "line": 14,
 // CHECK-NEXT:        "col": 12,
 // CHECK-NEXT:        "tokLen": 3
 // CHECK-NEXT:       },
 // CHECK-NEXT:       "end": {
-// CHECK-NEXT:        "offset": 186,
+// CHECK-NEXT:        "offset": {{[0-9]+}},
 // CHECK-NEXT:        "col": 12,
 // CHECK-NEXT:        "tokLen": 3
 // CHECK-NEXT:       }
@@ -435,12 +438,12 @@ void func(int val) {
 // CHECK-NEXT:        "kind": "ImplicitCastExpr",
 // CHECK-NEXT:        "range": {
 // CHECK-NEXT:         "begin": {
-// CHECK-NEXT:          "offset": 186,
+// CHECK-NEXT:          "offset": {{[0-9]+}},
 // CHECK-NEXT:          "col": 12,
 // CHECK-NEXT:          "tokLen": 3
 // CHECK-NEXT:         },
 // CHECK-NEXT:         "end": {
-// CHECK-NEXT:          "offset": 186,
+// CHECK-NEXT:          "offset": {{[0-9]+}},
 // CHECK-NEXT:          "col": 12,
 // CHECK-NEXT:          "tokLen": 3
 // CHECK-NEXT:         }
@@ -456,12 +459,12 @@ void func(int val) {
 // CHECK-NEXT:          "kind": "DeclRefExpr",
 // CHECK-NEXT:          "range": {
 // CHECK-NEXT:           "begin": {
-// CHECK-NEXT:            "offset": 186,
+// CHECK-NEXT:            "offset": {{[0-9]+}},
 // CHECK-NEXT:            "col": 12,
 // CHECK-NEXT:            "tokLen": 3
 // CHECK-NEXT:           },
 // CHECK-NEXT:           "end": {
-// CHECK-NEXT:            "offset": 186,
+// CHECK-NEXT:            "offset": {{[0-9]+}},
 // CHECK-NEXT:            "col": 12,
 // CHECK-NEXT:            "tokLen": 3
 // CHECK-NEXT:           }
@@ -488,13 +491,13 @@ void func(int val) {
 // CHECK-NEXT:      "kind": "NullStmt",
 // CHECK-NEXT:      "range": {
 // CHECK-NEXT:       "begin": {
-// CHECK-NEXT:        "offset": 195,
+// CHECK-NEXT:        "offset": {{[0-9]+}},
 // CHECK-NEXT:        "line": 15,
 // CHECK-NEXT:        "col": 5,
 // CHECK-NEXT:        "tokLen": 1
 // CHECK-NEXT:       },
 // CHECK-NEXT:       "end": {
-// CHECK-NEXT:        "offset": 195,
+// CHECK-NEXT:        "offset": {{[0-9]+}},
 // CHECK-NEXT:        "col": 5,
 // CHECK-NEXT:        "tokLen": 1
 // CHECK-NEXT:       }
@@ -505,13 +508,13 @@ void func(int val) {
 // CHECK-NEXT:      "kind": "NullStmt",
 // CHECK-NEXT:      "range": {
 // CHECK-NEXT:       "begin": {
-// CHECK-NEXT:        "offset": 208,
+// CHECK-NEXT:        "offset": {{[0-9]+}},
 // CHECK-NEXT:        "line": 17,
 // CHECK-NEXT:        "col": 5,
 // CHECK-NEXT:        "tokLen": 1
 // CHECK-NEXT:       },
 // CHECK-NEXT:       "end": {
-// CHECK-NEXT:        "offset": 208,
+// CHECK-NEXT:        "offset": {{[0-9]+}},
 // CHECK-NEXT:        "col": 5,
 // CHECK-NEXT:        "tokLen": 1
 // CHECK-NEXT:       }
@@ -523,16 +526,17 @@ void func(int val) {
 // CHECK-NEXT: }
 
 
+// CHECK-NOT: {{^}}Dumping
 // CHECK:  "kind": "IfStmt",
 // CHECK-NEXT:  "range": {
 // CHECK-NEXT:   "begin": {
-// CHECK-NEXT:    "offset": 213,
+// CHECK-NEXT:    "offset": {{[0-9]+}},
 // CHECK-NEXT:    "line": 19,
 // CHECK-NEXT:    "col": 3,
 // CHECK-NEXT:    "tokLen": 2
 // CHECK-NEXT:   },
 // CHECK-NEXT:   "end": {
-// CHECK-NEXT:    "offset": 240,
+// CHECK-NEXT:    "offset": {{[0-9]+}},
 // CHECK-NEXT:    "line": 20,
 // CHECK-NEXT:    "col": 5,
 // CHECK-NEXT:    "tokLen": 1
@@ -545,13 +549,13 @@ void func(int val) {
 // CHECK-NEXT:    "kind": "ConstantExpr",
 // CHECK-NEXT:    "range": {
 // CHECK-NEXT:     "begin": {
-// CHECK-NEXT:      "offset": 226,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "line": 19,
 // CHECK-NEXT:      "col": 16,
 // CHECK-NEXT:      "tokLen": 2
 // CHECK-NEXT:     },
 // CHECK-NEXT:     "end": {
-// CHECK-NEXT:      "offset": 232,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 22,
 // CHECK-NEXT:      "tokLen": 2
 // CHECK-NEXT:     }
@@ -567,12 +571,12 @@ void func(int val) {
 // CHECK-NEXT:      "kind": "BinaryOperator",
 // CHECK-NEXT:      "range": {
 // CHECK-NEXT:       "begin": {
-// CHECK-NEXT:        "offset": 226,
+// CHECK-NEXT:        "offset": {{[0-9]+}},
 // CHECK-NEXT:        "col": 16,
 // CHECK-NEXT:        "tokLen": 2
 // CHECK-NEXT:       },
 // CHECK-NEXT:       "end": {
-// CHECK-NEXT:        "offset": 232,
+// CHECK-NEXT:        "offset": {{[0-9]+}},
 // CHECK-NEXT:        "col": 22,
 // CHECK-NEXT:        "tokLen": 2
 // CHECK-NEXT:       }
@@ -588,12 +592,12 @@ void func(int val) {
 // CHECK-NEXT:        "kind": "IntegerLiteral",
 // CHECK-NEXT:        "range": {
 // CHECK-NEXT:         "begin": {
-// CHECK-NEXT:          "offset": 226,
+// CHECK-NEXT:          "offset": {{[0-9]+}},
 // CHECK-NEXT:          "col": 16,
 // CHECK-NEXT:          "tokLen": 2
 // CHECK-NEXT:         },
 // CHECK-NEXT:         "end": {
-// CHECK-NEXT:          "offset": 226,
+// CHECK-NEXT:          "offset": {{[0-9]+}},
 // CHECK-NEXT:          "col": 16,
 // CHECK-NEXT:          "tokLen": 2
 // CHECK-NEXT:         }
@@ -609,12 +613,12 @@ void func(int val) {
 // CHECK-NEXT:        "kind": "IntegerLiteral",
 // CHECK-NEXT:        "range": {
 // CHECK-NEXT:         "begin": {
-// CHECK-NEXT:          "offset": 232,
+// CHECK-NEXT:          "offset": {{[0-9]+}},
 // CHECK-NEXT:          "col": 22,
 // CHECK-NEXT:          "tokLen": 2
 // CHECK-NEXT:         },
 // CHECK-NEXT:         "end": {
-// CHECK-NEXT:          "offset": 232,
+// CHECK-NEXT:          "offset": {{[0-9]+}},
 // CHECK-NEXT:          "col": 22,
 // CHECK-NEXT:          "tokLen": 2
 // CHECK-NEXT:         }
@@ -634,13 +638,13 @@ void func(int val) {
 // CHECK-NEXT:    "kind": "NullStmt",
 // CHECK-NEXT:    "range": {
 // CHECK-NEXT:     "begin": {
-// CHECK-NEXT:      "offset": 240,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "line": 20,
 // CHECK-NEXT:      "col": 5,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     },
 // CHECK-NEXT:     "end": {
-// CHECK-NEXT:      "offset": 240,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 5,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     }
@@ -650,16 +654,17 @@ void func(int val) {
 // CHECK-NEXT: }
 
 
+// CHECK-NOT: {{^}}Dumping
 // CHECK:  "kind": "IfStmt",
 // CHECK-NEXT:  "range": {
 // CHECK-NEXT:   "begin": {
-// CHECK-NEXT:    "offset": 245,
+// CHECK-NEXT:    "offset": {{[0-9]+}},
 // CHECK-NEXT:    "line": 22,
 // CHECK-NEXT:    "col": 3,
 // CHECK-NEXT:    "tokLen": 2
 // CHECK-NEXT:   },
 // CHECK-NEXT:   "end": {
-// CHECK-NEXT:    "offset": 265,
+// CHECK-NEXT:    "offset": {{[0-9]+}},
 // CHECK-NEXT:    "line": 23,
 // CHECK-NEXT:    "col": 5,
 // CHECK-NEXT:    "tokLen": 1
@@ -672,13 +677,13 @@ void func(int val) {
 // CHECK-NEXT:    "kind": "DeclStmt",
 // CHECK-NEXT:    "range": {
 // CHECK-NEXT:     "begin": {
-// CHECK-NEXT:      "offset": 249,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "line": 22,
 // CHECK-NEXT:      "col": 7,
 // CHECK-NEXT:      "tokLen": 3
 // CHECK-NEXT:     },
 // CHECK-NEXT:     "end": {
-// CHECK-NEXT:      "offset": 257,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 15,
 // CHECK-NEXT:      "tokLen": 2
 // CHECK-NEXT:     }
@@ -688,25 +693,24 @@ void func(int val) {
 // CHECK-NEXT:      "id": "0x{{.*}}",
 // CHECK-NEXT:      "kind": "VarDecl",
 // CHECK-NEXT:      "loc": {
-// CHECK-NEXT:       "offset": 253,
+// CHECK-NEXT:       "offset": {{[0-9]+}},
 // CHECK-NEXT:       "col": 11,
 // CHECK-NEXT:       "tokLen": 1
 // CHECK-NEXT:      },
 // CHECK-NEXT:      "range": {
 // CHECK-NEXT:       "begin": {
-// CHECK-NEXT:        "offset": 249,
+// CHECK-NEXT:        "offset": {{[0-9]+}},
 // CHECK-NEXT:        "col": 7,
 // CHECK-NEXT:        "tokLen": 3
 // CHECK-NEXT:       },
 // CHECK-NEXT:       "end": {
-// CHECK-NEXT:        "offset": 257,
+// CHECK-NEXT:        "offset": {{[0-9]+}},
 // CHECK-NEXT:        "col": 15,
 // CHECK-NEXT:        "tokLen": 2
 // CHECK-NEXT:       }
 // CHECK-NEXT:      },
 // CHECK-NEXT:      "isUsed": true,
 // CHECK-NEXT:      "name": "i",
-// CHECK-NEXT:      "mangledName": "_ZZ4funciE1i",
 // CHECK-NEXT:      "type": {
 // CHECK-NEXT:       "qualType": "int"
 // CHECK-NEXT:      },
@@ -717,12 +721,12 @@ void func(int val) {
 // CHECK-NEXT:        "kind": "IntegerLiteral",
 // CHECK-NEXT:        "range": {
 // CHECK-NEXT:         "begin": {
-// CHECK-NEXT:          "offset": 257,
+// CHECK-NEXT:          "offset": {{[0-9]+}},
 // CHECK-NEXT:          "col": 15,
 // CHECK-NEXT:          "tokLen": 2
 // CHECK-NEXT:         },
 // CHECK-NEXT:         "end": {
-// CHECK-NEXT:          "offset": 257,
+// CHECK-NEXT:          "offset": {{[0-9]+}},
 // CHECK-NEXT:          "col": 15,
 // CHECK-NEXT:          "tokLen": 2
 // CHECK-NEXT:         }
@@ -742,12 +746,12 @@ void func(int val) {
 // CHECK-NEXT:    "kind": "ImplicitCastExpr",
 // CHECK-NEXT:    "range": {
 // CHECK-NEXT:     "begin": {
-// CHECK-NEXT:      "offset": 253,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 11,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     },
 // CHECK-NEXT:     "end": {
-// CHECK-NEXT:      "offset": 253,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 11,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     }
@@ -763,12 +767,12 @@ void func(int val) {
 // CHECK-NEXT:      "kind": "ImplicitCastExpr",
 // CHECK-NEXT:      "range": {
 // CHECK-NEXT:       "begin": {
-// CHECK-NEXT:        "offset": 253,
+// CHECK-NEXT:        "offset": {{[0-9]+}},
 // CHECK-NEXT:        "col": 11,
 // CHECK-NEXT:        "tokLen": 1
 // CHECK-NEXT:       },
 // CHECK-NEXT:       "end": {
-// CHECK-NEXT:        "offset": 253,
+// CHECK-NEXT:        "offset": {{[0-9]+}},
 // CHECK-NEXT:        "col": 11,
 // CHECK-NEXT:        "tokLen": 1
 // CHECK-NEXT:       }
@@ -784,12 +788,12 @@ void func(int val) {
 // CHECK-NEXT:        "kind": "DeclRefExpr",
 // CHECK-NEXT:        "range": {
 // CHECK-NEXT:         "begin": {
-// CHECK-NEXT:          "offset": 253,
+// CHECK-NEXT:          "offset": {{[0-9]+}},
 // CHECK-NEXT:          "col": 11,
 // CHECK-NEXT:          "tokLen": 1
 // CHECK-NEXT:         },
 // CHECK-NEXT:         "end": {
-// CHECK-NEXT:          "offset": 253,
+// CHECK-NEXT:          "offset": {{[0-9]+}},
 // CHECK-NEXT:          "col": 11,
 // CHECK-NEXT:          "tokLen": 1
 // CHECK-NEXT:         }
@@ -816,13 +820,13 @@ void func(int val) {
 // CHECK-NEXT:    "kind": "NullStmt",
 // CHECK-NEXT:    "range": {
 // CHECK-NEXT:     "begin": {
-// CHECK-NEXT:      "offset": 265,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "line": 23,
 // CHECK-NEXT:      "col": 5,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     },
 // CHECK-NEXT:     "end": {
-// CHECK-NEXT:      "offset": 265,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 5,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     }
@@ -832,16 +836,17 @@ void func(int val) {
 // CHECK-NEXT: }
 
 
+// CHECK-NOT: {{^}}Dumping
 // CHECK:  "kind": "IfStmt",
 // CHECK-NEXT:  "range": {
 // CHECK-NEXT:   "begin": {
-// CHECK-NEXT:    "offset": 270,
+// CHECK-NEXT:    "offset": {{[0-9]+}},
 // CHECK-NEXT:    "line": 25,
 // CHECK-NEXT:    "col": 3,
 // CHECK-NEXT:    "tokLen": 2
 // CHECK-NEXT:   },
 // CHECK-NEXT:   "end": {
-// CHECK-NEXT:    "offset": 293,
+// CHECK-NEXT:    "offset": {{[0-9]+}},
 // CHECK-NEXT:    "line": 26,
 // CHECK-NEXT:    "col": 5,
 // CHECK-NEXT:    "tokLen": 1
@@ -854,13 +859,13 @@ void func(int val) {
 // CHECK-NEXT:    "kind": "DeclStmt",
 // CHECK-NEXT:    "range": {
 // CHECK-NEXT:     "begin": {
-// CHECK-NEXT:      "offset": 274,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "line": 25,
 // CHECK-NEXT:      "col": 7,
 // CHECK-NEXT:      "tokLen": 3
 // CHECK-NEXT:     },
 // CHECK-NEXT:     "end": {
-// CHECK-NEXT:      "offset": 284,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 17,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     }
@@ -870,25 +875,24 @@ void func(int val) {
 // CHECK-NEXT:      "id": "0x{{.*}}",
 // CHECK-NEXT:      "kind": "VarDecl",
 // CHECK-NEXT:      "loc": {
-// CHECK-NEXT:       "offset": 278,
+// CHECK-NEXT:       "offset": {{[0-9]+}},
 // CHECK-NEXT:       "col": 11,
 // CHECK-NEXT:       "tokLen": 1
 // CHECK-NEXT:      },
 // CHECK-NEXT:      "range": {
 // CHECK-NEXT:       "begin": {
-// CHECK-NEXT:        "offset": 274,
+// CHECK-NEXT:        "offset": {{[0-9]+}},
 // CHECK-NEXT:        "col": 7,
 // CHECK-NEXT:        "tokLen": 3
 // CHECK-NEXT:       },
 // CHECK-NEXT:       "end": {
-// CHECK-NEXT:        "offset": 282,
+// CHECK-NEXT:        "offset": {{[0-9]+}},
 // CHECK-NEXT:        "col": 15,
 // CHECK-NEXT:        "tokLen": 2
 // CHECK-NEXT:       }
 // CHECK-NEXT:      },
 // CHECK-NEXT:      "isUsed": true,
 // CHECK-NEXT:      "name": "i",
-// CHECK-NEXT:      "mangledName": "_ZZ4funciE1i_0",
 // CHECK-NEXT:      "type": {
 // CHECK-NEXT:       "qualType": "int"
 // CHECK-NEXT:      },
@@ -899,12 +903,12 @@ void func(int val) {
 // CHECK-NEXT:        "kind": "IntegerLiteral",
 // CHECK-NEXT:        "range": {
 // CHECK-NEXT:         "begin": {
-// CHECK-NEXT:          "offset": 282,
+// CHECK-NEXT:          "offset": {{[0-9]+}},
 // CHECK-NEXT:          "col": 15,
 // CHECK-NEXT:          "tokLen": 2
 // CHECK-NEXT:         },
 // CHECK-NEXT:         "end": {
-// CHECK-NEXT:          "offset": 282,
+// CHECK-NEXT:          "offset": {{[0-9]+}},
 // CHECK-NEXT:          "col": 15,
 // CHECK-NEXT:          "tokLen": 2
 // CHECK-NEXT:         }
@@ -924,12 +928,12 @@ void func(int val) {
 // CHECK-NEXT:    "kind": "ImplicitCastExpr",
 // CHECK-NEXT:    "range": {
 // CHECK-NEXT:     "begin": {
-// CHECK-NEXT:      "offset": 286,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 19,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     },
 // CHECK-NEXT:     "end": {
-// CHECK-NEXT:      "offset": 286,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 19,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     }
@@ -945,12 +949,12 @@ void func(int val) {
 // CHECK-NEXT:      "kind": "ImplicitCastExpr",
 // CHECK-NEXT:      "range": {
 // CHECK-NEXT:       "begin": {
-// CHECK-NEXT:        "offset": 286,
+// CHECK-NEXT:        "offset": {{[0-9]+}},
 // CHECK-NEXT:        "col": 19,
 // CHECK-NEXT:        "tokLen": 1
 // CHECK-NEXT:       },
 // CHECK-NEXT:       "end": {
-// CHECK-NEXT:        "offset": 286,
+// CHECK-NEXT:        "offset": {{[0-9]+}},
 // CHECK-NEXT:        "col": 19,
 // CHECK-NEXT:        "tokLen": 1
 // CHECK-NEXT:       }
@@ -966,12 +970,12 @@ void func(int val) {
 // CHECK-NEXT:        "kind": "DeclRefExpr",
 // CHECK-NEXT:        "range": {
 // CHECK-NEXT:         "begin": {
-// CHECK-NEXT:          "offset": 286,
+// CHECK-NEXT:          "offset": {{[0-9]+}},
 // CHECK-NEXT:          "col": 19,
 // CHECK-NEXT:          "tokLen": 1
 // CHECK-NEXT:         },
 // CHECK-NEXT:         "end": {
-// CHECK-NEXT:          "offset": 286,
+// CHECK-NEXT:          "offset": {{[0-9]+}},
 // CHECK-NEXT:          "col": 19,
 // CHECK-NEXT:          "tokLen": 1
 // CHECK-NEXT:         }
@@ -998,13 +1002,13 @@ void func(int val) {
 // CHECK-NEXT:    "kind": "NullStmt",
 // CHECK-NEXT:    "range": {
 // CHECK-NEXT:     "begin": {
-// CHECK-NEXT:      "offset": 293,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "line": 26,
 // CHECK-NEXT:      "col": 5,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     },
 // CHECK-NEXT:     "end": {
-// CHECK-NEXT:      "offset": 293,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 5,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     }
@@ -1014,16 +1018,17 @@ void func(int val) {
 // CHECK-NEXT: }
 
 
+// CHECK-NOT: {{^}}Dumping
 // CHECK:  "kind": "IfStmt",
 // CHECK-NEXT:  "range": {
 // CHECK-NEXT:   "begin": {
-// CHECK-NEXT:    "offset": 298,
+// CHECK-NEXT:    "offset": {{[0-9]+}},
 // CHECK-NEXT:    "line": 28,
 // CHECK-NEXT:    "col": 3,
 // CHECK-NEXT:    "tokLen": 2
 // CHECK-NEXT:   },
 // CHECK-NEXT:   "end": {
-// CHECK-NEXT:    "offset": 312,
+// CHECK-NEXT:    "offset": {{[0-9]+}},
 // CHECK-NEXT:    "col": 17,
 // CHECK-NEXT:    "tokLen": 1
 // CHECK-NEXT:   }
@@ -1035,12 +1040,12 @@ void func(int val) {
 // CHECK-NEXT:    "kind": "CompoundStmt",
 // CHECK-NEXT:    "range": {
 // CHECK-NEXT:     "begin": {
-// CHECK-NEXT:      "offset": 311,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 16,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     },
 // CHECK-NEXT:     "end": {
-// CHECK-NEXT:      "offset": 312,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 17,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     }
@@ -1050,16 +1055,17 @@ void func(int val) {
 // CHECK-NEXT: }
 
 
+// CHECK-NOT: {{^}}Dumping
 // CHECK:  "kind": "IfStmt",
 // CHECK-NEXT:  "range": {
 // CHECK-NEXT:   "begin": {
-// CHECK-NEXT:    "offset": 317,
+// CHECK-NEXT:    "offset": {{[0-9]+}},
 // CHECK-NEXT:    "line": 30,
 // CHECK-NEXT:    "col": 3,
 // CHECK-NEXT:    "tokLen": 2
 // CHECK-NEXT:   },
 // CHECK-NEXT:   "end": {
-// CHECK-NEXT:    "offset": 339,
+// CHECK-NEXT:    "offset": {{[0-9]+}},
 // CHECK-NEXT:    "col": 25,
 // CHECK-NEXT:    "tokLen": 1
 // CHECK-NEXT:   }
@@ -1072,12 +1078,12 @@ void func(int val) {
 // CHECK-NEXT:    "kind": "CompoundStmt",
 // CHECK-NEXT:    "range": {
 // CHECK-NEXT:     "begin": {
-// CHECK-NEXT:      "offset": 330,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 16,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     },
 // CHECK-NEXT:     "end": {
-// CHECK-NEXT:      "offset": 331,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 17,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     }
@@ -1088,12 +1094,12 @@ void func(int val) {
 // CHECK-NEXT:    "kind": "CompoundStmt",
 // CHECK-NEXT:    "range": {
 // CHECK-NEXT:     "begin": {
-// CHECK-NEXT:      "offset": 338,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 24,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     },
 // CHECK-NEXT:     "end": {
-// CHECK-NEXT:      "offset": 339,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 25,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     }
@@ -1103,16 +1109,17 @@ void func(int val) {
 // CHECK-NEXT: }
 
 
+// CHECK-NOT: {{^}}Dumping
 // CHECK:  "kind": "IfStmt",
 // CHECK-NEXT:  "range": {
 // CHECK-NEXT:   "begin": {
-// CHECK-NEXT:    "offset": 344,
+// CHECK-NEXT:    "offset": {{[0-9]+}},
 // CHECK-NEXT:    "line": 32,
 // CHECK-NEXT:    "col": 3,
 // CHECK-NEXT:    "tokLen": 2
 // CHECK-NEXT:   },
 // CHECK-NEXT:   "end": {
-// CHECK-NEXT:    "offset": 362,
+// CHECK-NEXT:    "offset": {{[0-9]+}},
 // CHECK-NEXT:    "col": 21,
 // CHECK-NEXT:    "tokLen": 1
 // CHECK-NEXT:   }
@@ -1125,12 +1132,12 @@ void func(int val) {
 // CHECK-NEXT:    "kind": "CompoundStmt",
 // CHECK-NEXT:    "range": {
 // CHECK-NEXT:     "begin": {
-// CHECK-NEXT:      "offset": 361,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 20,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     },
 // CHECK-NEXT:     "end": {
-// CHECK-NEXT:      "offset": 362,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 21,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     }
@@ -1140,16 +1147,17 @@ void func(int val) {
 // CHECK-NEXT: }
 
 
+// CHECK-NOT: {{^}}Dumping
 // CHECK:  "kind": "IfStmt",
 // CHECK-NEXT:  "range": {
 // CHECK-NEXT:   "begin": {
-// CHECK-NEXT:    "offset": 367,
+// CHECK-NEXT:    "offset": {{[0-9]+}},
 // CHECK-NEXT:    "line": 34,
 // CHECK-NEXT:    "col": 3,
 // CHECK-NEXT:    "tokLen": 2
 // CHECK-NEXT:   },
 // CHECK-NEXT:   "end": {
-// CHECK-NEXT:    "offset": 393,
+// CHECK-NEXT:    "offset": {{[0-9]+}},
 // CHECK-NEXT:    "col": 29,
 // CHECK-NEXT:    "tokLen": 1
 // CHECK-NEXT:   }
@@ -1163,12 +1171,12 @@ void func(int val) {
 // CHECK-NEXT:    "kind": "CompoundStmt",
 // CHECK-NEXT:    "range": {
 // CHECK-NEXT:     "begin": {
-// CHECK-NEXT:      "offset": 384,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 20,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     },
 // CHECK-NEXT:     "end": {
-// CHECK-NEXT:      "offset": 385,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 21,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     }
@@ -1179,12 +1187,12 @@ void func(int val) {
 // CHECK-NEXT:    "kind": "CompoundStmt",
 // CHECK-NEXT:    "range": {
 // CHECK-NEXT:     "begin": {
-// CHECK-NEXT:      "offset": 392,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 28,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     },
 // CHECK-NEXT:     "end": {
-// CHECK-NEXT:      "offset": 393,
+// CHECK-NEXT:      "offset": {{[0-9]+}},
 // CHECK-NEXT:      "col": 29,
 // CHECK-NEXT:      "tokLen": 1
 // CHECK-NEXT:     }

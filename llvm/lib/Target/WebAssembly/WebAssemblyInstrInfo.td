@@ -66,6 +66,10 @@ def HasReferenceTypes :
     Predicate<"Subtarget->hasReferenceTypes()">,
     AssemblerPredicate<(all_of FeatureReferenceTypes), "reference-types">;
 
+def HasExtendedConst :
+    Predicate<"Subtarget->hasExtendedConst()">,
+    AssemblerPredicate<(all_of FeatureExtendedConst), "extended-const">;
+
 //===----------------------------------------------------------------------===//
 // WebAssembly-specific DAG Node Types.
 //===----------------------------------------------------------------------===//
@@ -202,11 +206,6 @@ def Signature : Operand<i32> {
   let PrintMethod = "printWebAssemblySignatureOperand";
 }
 
-let OperandType = "OPERAND_HEAPTYPE" in
-def HeapType : Operand<i32> {
-  let PrintMethod = "printWebAssemblyHeapTypeOperand";
-}
-
 let OperandType = "OPERAND_TYPEINDEX" in
 def TypeIndex : Operand<i32>;
 
@@ -226,8 +225,8 @@ def getStackOpcode : InstrMapping {
   let FilterClass = "StackRel";
   let RowFields = ["BaseName"];
   let ColFields = ["StackBased"];
-  let KeyCol = ["false"];
-  let ValueCols = [["true"]];
+  let KeyCol = ["0"];
+  let ValueCols = [["1"]];
 }
 
 //===----------------------------------------------------------------------===//
@@ -239,8 +238,8 @@ def getRegisterOpcode : InstrMapping {
   let FilterClass = "RegisterRel";
   let RowFields = ["BaseName"];
   let ColFields = ["StackBased"];
-  let KeyCol = ["true"];
-  let ValueCols = [["false"]];
+  let KeyCol = ["1"];
+  let ValueCols = [["0"]];
 }
 
 //===----------------------------------------------------------------------===//
@@ -252,8 +251,8 @@ def getWasm64Opcode : InstrMapping {
   let FilterClass = "Wasm64Rel";
   let RowFields = ["Wasm32Name"];
   let ColFields = ["IsWasm64"];
-  let KeyCol = ["false"];
-  let ValueCols = [["true"]];
+  let KeyCol = ["0"];
+  let ValueCols = [["1"]];
 }
 
 //===----------------------------------------------------------------------===//
@@ -417,8 +416,10 @@ def : Pat<(i32 (WebAssemblyWrapper texternalsym:$addr)),
 def : Pat<(i64 (WebAssemblyWrapper texternalsym:$addr)),
           (CONST_I64 texternalsym:$addr)>, Requires<[IsNotPIC, HasAddr64]>;
 
-def : Pat<(i32 (WebAssemblyWrapper mcsym:$sym)), (CONST_I32 mcsym:$sym)>;
-def : Pat<(i64 (WebAssemblyWrapper mcsym:$sym)), (CONST_I64 mcsym:$sym)>;
+def : Pat<(i32 (WebAssemblyWrapperREL texternalsym:$addr)),
+          (CONST_I32 texternalsym:$addr)>, Requires<[IsPIC, HasAddr32]>;
+def : Pat<(i64 (WebAssemblyWrapperREL texternalsym:$addr)),
+          (CONST_I64 texternalsym:$addr)>, Requires<[IsPIC, HasAddr64]>;
 
 //===----------------------------------------------------------------------===//
 // Additional sets of instructions.

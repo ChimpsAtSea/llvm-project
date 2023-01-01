@@ -1668,7 +1668,7 @@ ValueObjectSP ABISysV_arm::GetReturnValueObjectImpl(
     ProcessSP process_sp(thread.GetProcess());
     ByteOrder byte_order = process_sp->GetByteOrder();
 
-    DataBufferSP data_sp(new DataBufferHeap(*byte_size, 0));
+    WritableDataBufferSP data_sp(new DataBufferHeap(*byte_size, 0));
     uint32_t data_offset = 0;
 
     for (uint32_t reg_index = 0; reg_index < vfp_count; reg_index++) {
@@ -2026,15 +2026,4 @@ void ABISysV_arm::Initialize() {
 
 void ABISysV_arm::Terminate() {
   PluginManager::UnregisterPlugin(CreateInstance);
-}
-
-lldb_private::ConstString ABISysV_arm::GetPluginNameStatic() {
-  static ConstString g_name("SysV-arm");
-  return g_name;
-}
-
-// PluginInterface protocol
-
-lldb_private::ConstString ABISysV_arm::GetPluginName() {
-  return GetPluginNameStatic();
 }

@@ -112,6 +112,13 @@ CreateCI(const llvm::opt::ArgStringList &Argv) {
 
   Clang->getTarget().adjust(Clang->getDiagnostics(), Clang->getLangOpts());
 
+  // Don't clear the AST before backend codegen since we do codegen multiple
+  // times, reusing the same AST.
+  Clang->getCodeGenOpts().ClearASTBeforeBackend = false;
+
+  Clang->getFrontendOpts().DisableFree = false;
+  Clang->getCodeGenOpts().DisableFree = false;
+
   return std::move(Clang);
 }
 
@@ -143,7 +150,6 @@ IncrementalCompilerBuilder::create(std::vector<const char *> &ClangArgv) {
   // driver to construct.
   ClangArgv.push_back("<<< inputs >>>");
 
-  CompilerInvocation Invocation;
   // Buffer diagnostics from argument parsing so that we can output them using a
   // well formed diagnostic object.
   IntrusiveRefCntPtr<DiagnosticIDs> DiagID(new DiagnosticIDs());
@@ -193,6 +199,12 @@ const CompilerInstance *Interpreter::getCompilerInstance() const {
   return IncrParser->getCI();
 }
 
+const llvm::orc::LLJIT *Interpreter::getExecutionEngine() const {
+  if (IncrExecutor)
+    return IncrExecutor->getExecutionEngine();
+  return nullptr;
+}
+
 llvm::Expected<PartialTranslationUnit &>
 Interpreter::Parse(llvm::StringRef Code) {
   return IncrParser->Parse(Code);
@@ -201,16 +213,16 @@ Interpreter::Parse(llvm::StringRef Code) {
 llvm::Error Interpreter::Execute(PartialTranslationUnit &T) {
   assert(T.TheModule);
   if (!IncrExecutor) {
-    const llvm::Triple &Triple =
-        getCompilerInstance()->getASTContext().getTargetInfo().getTriple();
+    const clang::TargetInfo &TI =
+        getCompilerInstance()->getASTContext().getTargetInfo();
     llvm::Error Err = llvm::Error::success();
-    IncrExecutor = std::make_unique<IncrementalExecutor>(*TSCtx, Err, Triple);
+    IncrExecutor = std::make_unique<IncrementalExecutor>(*TSCtx, Err, TI);
 
     if (Err)
       return Err;
   }
   // FIXME: Add a callback to retain the llvm::Module once the JIT is done.
-  if (auto Err = IncrExecutor->addModule(std::move(T.TheModule)))
+  if (auto Err = IncrExecutor->addModule(T))
     return Err;
 
   if (auto Err = IncrExecutor->runCtors())
@@ -220,11 +232,50 @@ llvm::Error Interpreter::Execute(PartialTranslationUnit &T) {
 }
 
 llvm::Expected<llvm::JITTargetAddress>
-Interpreter::getSymbolAddress(llvm::StringRef UnmangledName) const {
+Interpreter::getSymbolAddress(GlobalDecl GD) const {
+  if (!IncrExecutor)
+    return llvm::make_error<llvm::StringError>("Operation failed. "
+                                               "No execution engine",
+                                               std::error_code());
+  llvm::StringRef MangledName = IncrParser->GetMangledName(GD);
+  return getSymbolAddress(MangledName);
+}
+
+llvm::Expected<llvm::JITTargetAddress>
+Interpreter::getSymbolAddress(llvm::StringRef IRName) const {
   if (!IncrExecutor)
     return llvm::make_error<llvm::StringError>("Operation failed. "
                                                "No execution engine",
                                                std::error_code());
 
-  return IncrExecutor->getSymbolAddress(UnmangledName);
+  return IncrExecutor->getSymbolAddress(IRName, IncrementalExecutor::IRName);
+}
+
+llvm::Expected<llvm::JITTargetAddress>
+Interpreter::getSymbolAddressFromLinkerName(llvm::StringRef Name) const {
+  if (!IncrExecutor)
+    return llvm::make_error<llvm::StringError>("Operation failed. "
+                                               "No execution engine",
+                                               std::error_code());
+
+  return IncrExecutor->getSymbolAddress(Name, IncrementalExecutor::LinkerName);
+}
+
+llvm::Error Interpreter::Undo(unsigned N) {
+
+  std::list<PartialTranslationUnit> &PTUs = IncrParser->getPTUs();
+  if (N > PTUs.size())
+    return llvm::make_error<llvm::StringError>("Operation failed. "
+                                               "Too many undos",
+                                               std::error_code());
+  for (unsigned I = 0; I < N; I++) {
+    if (IncrExecutor) {
+      if (llvm::Error Err = IncrExecutor->removeModule(PTUs.back()))
+        return Err;
+    }
+
+    IncrParser->CleanUpPTU(PTUs.back());
+    PTUs.pop_back();
+  }
+  return llvm::Error::success();
 }

@@ -60,6 +60,8 @@ WasmDumper::dumpCustomSection(const WasmSection &WasmSec) {
     DylinkSec->TableSize = Info.TableSize;
     DylinkSec->TableAlignment = Info.TableAlignment;
     DylinkSec->Needed = Info.Needed;
+    for (const auto &Imp : Info.ImportInfo)
+      DylinkSec->ImportInfo.push_back({Imp.Module, Imp.Field, Imp.Flags});
     for (const auto &Exp : Info.ExportInfo)
       DylinkSec->ExportInfo.push_back({Exp.Name, Exp.Flags});
     CustomSec = std::move(DylinkSec);
@@ -296,7 +298,12 @@ ErrorOr<WasmYAML::Object *> WasmDumper::dump() {
         G.Index = Global.Index;
         G.Type = Global.Type.Type;
         G.Mutable = Global.Type.Mutable;
-        G.InitExpr = Global.InitExpr;
+        G.Init.Extended = Global.InitExpr.Extended;
+        if (Global.InitExpr.Extended) {
+          G.Init.Body = Global.InitExpr.Body;
+        } else {
+          G.Init.Inst = Global.InitExpr.Inst;
+        }
         GlobalSec->Globals.push_back(G);
       }
       S = std::move(GlobalSec);
@@ -327,7 +334,12 @@ ErrorOr<WasmYAML::Object *> WasmDumper::dump() {
         Seg.Flags = Segment.Flags;
         Seg.TableNumber = Segment.TableNumber;
         Seg.ElemKind = Segment.ElemKind;
-        Seg.Offset = Segment.Offset;
+        Seg.Offset.Extended = Segment.Offset.Extended;
+        if (Seg.Offset.Extended) {
+          Seg.Offset.Body = yaml::BinaryRef(Segment.Offset.Body);
+        } else {
+          Seg.Offset.Inst = Segment.Offset.Inst;
+        }
         append_range(Seg.Functions, Segment.Functions);
         ElemSec->Segments.push_back(Seg);
       }
@@ -358,7 +370,12 @@ ErrorOr<WasmYAML::Object *> WasmDumper::dump() {
         Seg.SectionOffset = Segment.SectionOffset;
         Seg.InitFlags = Segment.Data.InitFlags;
         Seg.MemoryIndex = Segment.Data.MemoryIndex;
-        Seg.Offset = Segment.Data.Offset;
+        Seg.Offset.Extended = Segment.Data.Offset.Extended;
+        if (Seg.Offset.Extended) {
+          Seg.Offset.Body = yaml::BinaryRef(Segment.Data.Offset.Body);
+        } else {
+          Seg.Offset.Inst = Segment.Data.Offset.Inst;
+        }
         Seg.Content = yaml::BinaryRef(Segment.Data.Content);
         DataSec->Segments.push_back(Seg);
       }

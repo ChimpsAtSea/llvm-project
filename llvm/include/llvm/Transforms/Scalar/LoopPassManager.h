@@ -40,8 +40,6 @@
 #include "llvm/Analysis/LoopAnalysisManager.h"
 #include "llvm/Analysis/LoopInfo.h"
 #include "llvm/Analysis/LoopNestAnalysis.h"
-#include "llvm/IR/Dominators.h"
-#include "llvm/IR/PassInstrumentation.h"
 #include "llvm/IR/PassManager.h"
 #include "llvm/Transforms/Utils/LCSSA.h"
 #include "llvm/Transforms/Utils/LoopSimplify.h"
@@ -52,6 +50,7 @@ namespace llvm {
 
 // Forward declarations of an update tracking API used in the pass manager.
 class LPMUpdater;
+class PassInstrumentation;
 
 namespace {
 
@@ -73,7 +72,7 @@ class PassManager<Loop, LoopAnalysisManager, LoopStandardAnalysisResults &,
           PassManager<Loop, LoopAnalysisManager, LoopStandardAnalysisResults &,
                       LPMUpdater &>> {
 public:
-  explicit PassManager() {}
+  explicit PassManager() = default;
 
   // FIXME: These are equivalent to the default move constructor/move
   // assignment. However, using = default triggers linker errors due to the
@@ -281,8 +280,6 @@ public:
   /// state, this routine will mark that the current loop should be skipped by
   /// the rest of the pass management infrastructure.
   void markLoopAsDeleted(Loop &L, llvm::StringRef Name) {
-    assert((!LoopNestMode || CurrentL == &L) &&
-           "L should be a top-level loop in loop-nest mode.");
     LAM.clear(L, Name);
     assert((&L == CurrentL || CurrentL->contains(&L)) &&
            "Cannot delete a loop outside of the "
@@ -437,8 +434,7 @@ public:
                                      bool UseBlockFrequencyInfo = false,
                                      bool UseBranchProbabilityInfo = false,
                                      bool LoopNestMode = false)
-      : Pass(std::move(Pass)), LoopCanonicalizationFPM(),
-        UseMemorySSA(UseMemorySSA),
+      : Pass(std::move(Pass)), UseMemorySSA(UseMemorySSA),
         UseBlockFrequencyInfo(UseBlockFrequencyInfo),
         UseBranchProbabilityInfo(UseBranchProbabilityInfo),
         LoopNestMode(LoopNestMode) {
