@@ -4356,8 +4356,8 @@ bool X86AsmParser::MatchAndEmitIntelInstruction(SMLoc IDLoc, unsigned &Opcode,
       // If it's not a constant fall through and let remainder take care of it.
       const auto *CE = dyn_cast<MCConstantExpr>(X86Op->getImm());
       unsigned Size = getPointerWidth();
-      if (CE &&
-          (isIntN(Size, CE->getValue()) || isUIntN(Size, CE->getValue()))) {
+      if (X86Op->needAddressOf() || (CE && (isIntN(Size, CE->getValue()) ||
+                                      isUIntN(Size, CE->getValue())))) {
         SmallString<16> Tmp;
         Tmp += Base;
         Tmp += (is64BitMode())

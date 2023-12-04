@@ -6050,7 +6050,7 @@ bool AsmParser::parseMSInlineAsm(
           Constraint = "i";
       }
 
-      bool isOutput = (i == 1) && Desc.mayStore();
+      bool isOutput = (i == 1) && Desc.mayStore() && !Operand.needAddressOf();
       bool Restricted = Operand.isMemUseUpRegs();
       SMLoc Start = SMLoc::getFromPointer(SymName.data());
       if (isOutput) {
