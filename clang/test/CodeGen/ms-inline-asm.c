@@ -682,6 +682,12 @@ void t47(void) {
   // CHECK: call void asm sideeffect inteldialect "movdir64b eax, zmmword ptr $0", "*m,~{dirflag},~{fpsr},~{flags}"(ptr elementtype([1000 x i32]) %arr)
 }
 
+void push_offset(void){
+  // CHECK-LABEL: define{{.*}} void @push_offset
+	__asm { push offset push_offset }
+  // CHECK: call void asm sideeffect inteldialect "push offset push_offset", "~{esp},~{dirflag},~{fpsr},~{flags}"
+}
+
 void dot_operator(void){
   // CHECK-LABEL: define{{.*}} void @dot_operator
 	__asm { mov eax, 3[ebx]A.b}
